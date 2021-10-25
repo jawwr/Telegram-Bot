@@ -6,18 +6,18 @@ def get_lessons():
     day_now = get_date.get_day_number()
     timenow = get_date.get_time_now()
     if day_now == 6:
-        return 3
+        return "no lesson"
     for i in range(0, len(week[day_now])):
         day_now = get_date.set_time(week[day_now][i])
         if (timenow >= day_now.time_start) and (timenow <= day_now.time_end):
             return week[day_now][i]
     for i in range(0, len(week[day_now]) - 1):
         if timenow >= (get_date.set_time(week[day_now][i].time_end)) and timenow <= (get_date.set_time(week[day_now][i+1].time_start)):
-            return 2
+            return "pause"
     if timenow > get_date.set_time(week[day_now][len(week[day_now]) - 1].time_end):
-        return 1
+        return "lessons are over"
     if timenow < get_date.set_time(week[day_now][0].time_start):
-        return 0
+        return "lessons will start"
 
 def get_all_lessons_today():
     week = get_week()

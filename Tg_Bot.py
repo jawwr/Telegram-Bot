@@ -32,15 +32,15 @@ def send_help(message):
 @bot.message_handler(commands=['пара'])
 def send_lessons(message):
 	lesson = get_lessons.get_lessons()
-	if lesson == 0:
+	if lesson == "lessons will start":
 		first_lesson = get_lessons.get_first_lessons()
 		bot.send_message(message.chat.id, "<b>Пары еще не начались!\nПервая пара:</b> {0}\n<b>Начало в:</b> {1}".format(first_lesson.name,first_lesson.time_start), parse_mode = 'html')
-	elif lesson == 1:
+	elif lesson == "lessons are over":
 		bot.send_message(message.chat.id, "<b>Пары кончились!</b>", parse_mode = 'html')
-	elif lesson == 2:
+	elif lesson == "pause":
 		next_lesson = get_lessons.get_next_lessons()
 		bot.send_message(message.chat.id, "<b>Сейчас перемена\nСледующая пара:</b> {0}\n<b>Начало в:</b> {1}".format(next_lesson.name,next_lesson.time_start), parse_mode = 'html')
-	elif lesson == 3:
+	elif lesson == "no lesson":
 		bot.send_message(message.chat.id, "<b>На сегодня пар нет, отдыхай!</b>", parse_mode = 'html')
 	else:
 		bot.send_message(message.chat.id, "Сейчас идет пара {0}\nНачало пары: {1}\nКонец пары: {2}\nАудитория: {3}".format(lesson.name, lesson.time_start, lesson.time_end,lesson.auditorium))

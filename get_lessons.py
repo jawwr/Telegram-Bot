@@ -8,8 +8,7 @@ def get_lessons():
     if day_now == 6:
         return "no lesson"
     for i in range(0, len(week[day_now])):
-        day_now = get_date.set_time(week[day_now][i])
-        if (timenow >= day_now.time_start) and (timenow <= day_now.time_end):
+        if (timenow >= get_date.set_time(week[day_now][i].time_start)) and (timenow <= get_date.set_time(week[day_now][i].time_end)):
             return week[day_now][i]
     for i in range(0, len(week[day_now]) - 1):
         if timenow >= (get_date.set_time(week[day_now][i].time_end)) and timenow <= (get_date.set_time(week[day_now][i+1].time_start)):

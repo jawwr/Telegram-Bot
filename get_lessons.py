@@ -2,7 +2,7 @@ import get_date
 import setlessons
 
 def get_lessons():
-    week = get_week()
+    week = get_week('')
     day_now = get_date.get_day_number()
     timenow = get_date.get_time_now()
     if day_now == 6:
@@ -19,7 +19,7 @@ def get_lessons():
         return "lessons will start"
 
 def get_all_lessons_today():
-    week = get_week()
+    week = get_week('')
     day_now = get_date.get_day_number()
     text = ""
     les = get_lessons()
@@ -37,10 +37,12 @@ def get_all_lessons_today():
                 text = text + "\n{0}) Пара: {1}\nНачало в: {2}\nКонец в: {3}\nАудитория: {4}\n".format(i+1,less_today.name,less_today.time_start, less_today.time_end,less_today.auditorium)
     return text
 
-def get_all_lessons_weeks():
-    week = get_week()
-    text = "\n<b>Сейчас {0} неделя.</b>\n\n".format(get_date.get_week_number())
-    for day in range(0, len(week) - 1):
+def get_all_lessons_weeks(name_week):
+    week = get_week(name_week)
+    if name_week == "":
+        name_week = get_date.get_week_number()
+    text = "\n<b>{0} неделя.</b>\n\n".format(name_week)
+    for day in range(0, len(week)):
         text = text + "———————————\n"
         text = text + "<u><b>{0}:</b></u>\n".format(get_date.day_name[day])
         for less in range(0, len(week[day])):
@@ -50,20 +52,24 @@ def get_all_lessons_weeks():
 
 def check_lesson_now():
     lesson = get_lessons()
-    return (lesson != 1) and (lesson != 0) and (lesson != 2) and (lesson != 3)
+    return (lesson != "no lesson") and (lesson != "pause") and (lesson != "lessons are over") and (lesson != "lessons will start")
 
-def get_week():
+def get_week(week_name):
+    if week_name == "Первая":
+        return setlessons.first_week_lessons
+    if week_name == "Вторая":
+        return setlessons.second_week_lessons
     if get_date.get_week_number() == "Первая":
         return setlessons.first_week_lessons
     if get_date.get_week_number() == "Вторая":
         return setlessons.second_week_lessons
 
 def get_first_lessons():
-    week = get_week()
+    week = get_week('')
     return week[get_date.get_day_number()][0]
 
 def get_next_lessons():
-    week = get_week()
+    week = get_week('')
     day_now = get_date.get_day_number()
     for i in range(0, len(week[day_now]) - 1):
         if get_date.get_time_now() >= (get_date.set_time(week[day_now][i].time_end)) and get_date.get_time_now() <= (get_date.set_time(week[day_now][i+1].time_start)):

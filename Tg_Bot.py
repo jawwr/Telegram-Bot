@@ -51,14 +51,22 @@ def send_schedule(message):
 	bot.send_message(message.chat.id, "<b>Все пары на сегодня:</b>\n{0}".format(text), parse_mode = 'html')
 
 @bot.message_handler(commands=['неделя'])
-def send_week(message):
-	text = get_lessons.get_all_lessons_weeks()
+def send_week(message, name):
+	text = get_lessons.get_all_lessons_weeks(name)
 	bot.send_message(message.chat.id, "<b>Все расписание на неделю:</b>\n{0}".format(text), parse_mode = 'html')
+
+@bot.message_handler(commands=['test'])
+def test(message):
+	bot.edit_message_text("новый текст", message.chat.id, message)
 
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
 	if message.text == "!неделя" or message.text == "!Неделя":
-		send_week(message)
+		send_week(message, '')
+	elif message.text == "!1 неделя" or message.text == "!1 Неделя":
+		send_week(message,"Первая")
+	elif message.text == "!2 неделя" or message.text == "!2 Неделя":
+		send_week(message,"Вторая")
 	elif message.text == "!расписание" or message.text == "!Расписание":
 		send_schedule(message)
 	elif message.text == "!пара" or message.text == "!Пара":

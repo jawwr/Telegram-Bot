@@ -15,7 +15,7 @@ def send_welcome(message):
 	item4 = types.KeyboardButton("/help")
 	markup.add(item1,item2, item3, item4)
 
-	bot.send_message(message.chat.id, "Привет, {0.first_name}, я бот-помощник с расписанием.[beta]\n Вот список моих команд:\n /help - узнать весь список команд\n !пара - узнать, какая сейчас пара.\n !расписание - узнать какое сегодня расписание\n !неделя - узнать все расписание на неделю\n".format(message.from_user), parse_mode = 'html', reply_markup=markup)
+	bot.send_message(message.chat.id, "Привет, {0.first_name}, я бот-помощник с расписанием.[beta]\n Вот список моих команд:\n /help - узнать список команд\n !пара - узнать, какая сейчас пара.\n !расписание - узнать какое сегодня расписание\n !неделя - узнать все расписание на неделю\n".format(message.from_user), parse_mode = 'html', reply_markup=markup)
 
 @bot.message_handler(commands=['help'])
 def send_help(message):
@@ -28,7 +28,8 @@ def send_help(message):
 	item4 = types.KeyboardButton("/help")
 	markup.add(item1,item2, item3, item4)
 
-	bot.send_message(message.chat.id, "Вот список моих команд:\n !пара - узнать, какая сейчас пара.\n !расписание - узнать какое сегодня расписание\n !неделя - узнать все расписание на неделю\n", reply_markup=markup)
+	bot.send_message(message.chat.id, "<b>Вот список моих команд:\n   !пара</b> - узнать, какая сейчас пара.\n   <b>!расписание</b> - узнать какое сегодня расписание\n   <b>!неделя</b> - узнать все расписание на текущую неделю\n<b>     [ !1 неделя</b> - узнать расписание на первую неделю<b> ]\n     [ !2 неделя</b> - узнать расписание на первую неделю ]", parse_mode = "html", reply_markup=markup)
+
 
 @bot.message_handler(commands=['пара'])
 def send_lessons(message):
@@ -56,23 +57,19 @@ def send_week(message, name):
 	text = get_lessons.get_all_lessons_weeks(name)
 	bot.send_message(message.chat.id, "<b>Все расписание на неделю:</b>\n{0}".format(text), parse_mode = 'html')
 
-@bot.message_handler(commands=['test'])
-def test(message):
-	bot.edit_message_text("новый текст", message.chat.id, message)
-
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
 	if message.text == "!неделя" or message.text == "!Неделя":
 		send_week(message, '')
-	elif message.text == "!1 неделя" or message.text == "!1 Неделя":
+	elif message.text == "!1 неделя" or message.text == "!1 Неделя" or message.text == "!1Неделя" or message.text == "!1неделя":
 		send_week(message,"Первая")
-	elif message.text == "!2 неделя" or message.text == "!2 Неделя":
+	elif message.text == "!2 неделя" or message.text == "!2 Неделя" or message.text == "!2Неделя" or message.text == "!2неделя":
 		send_week(message,"Вторая")
 	elif message.text == "!расписание" or message.text == "!Расписание":
 		send_schedule(message)
 	elif message.text == "!пара" or message.text == "!Пара":
 		send_lessons(message)
 	else:
-		bot.send_message(message.chat.id, "Я не знаю, что на это ответить")
+		bot.reply_to(message, "Я не знаю, что на это ответить")
 
 bot.infinity_polling()

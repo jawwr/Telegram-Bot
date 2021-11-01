@@ -20,7 +20,7 @@ def get_lessons():
         return "lessons will start"
 
 
-# Получение расписания пар на сегодня,
+# Получение расписания пар на сегодня
 def get_all_lessons_today():
     week = get_week('')
     day_now = get_date.get_day_number()

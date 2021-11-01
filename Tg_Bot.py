@@ -9,11 +9,13 @@ bot = telebot.TeleBot(config.Token)
 def send_welcome(message):
 	markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
 
-	item1 = types.KeyboardButton("!пара")
-	item2 = types.KeyboardButton("!расписание")
-	item3 = types.KeyboardButton("!неделя")
-	item4 = types.KeyboardButton("/help")
-	markup.add(item1,item2, item3, item4)
+	item1 = types.KeyboardButton("/пара")
+	item2 = types.KeyboardButton("/расписание")
+	item3 = types.KeyboardButton("/неделя")
+	item4 = types.KeyboardButton("!1 неделя")
+	item5 = types.KeyboardButton("!2 неделя")
+	item6 = types.KeyboardButton("/help")
+	markup.add(item1,item2, item3, item6)
 
 	bot.send_message(message.chat.id, "Привет, {0.first_name}, я бот-помощник с расписанием.[beta]\n Вот список моих команд:\n /help - узнать список команд\n !пара - узнать, какая сейчас пара.\n !расписание - узнать какое сегодня расписание\n !неделя - узнать все расписание на неделю\n".format(message.from_user), parse_mode = 'html', reply_markup=markup)
 
@@ -22,11 +24,13 @@ def send_help(message):
 
 	markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
 
-	item1 = types.KeyboardButton("!пара")
-	item2 = types.KeyboardButton("!расписание")
-	item3 = types.KeyboardButton("!неделя")
-	item4 = types.KeyboardButton("/help")
-	markup.add(item1,item2, item3, item4)
+	item1 = types.KeyboardButton("/пара")
+	item2 = types.KeyboardButton("/расписание")
+	item3 = types.KeyboardButton("/неделя")
+	item4 = types.KeyboardButton("!1 неделя")
+	item5 = types.KeyboardButton("!2 неделя")
+	item6 = types.KeyboardButton("/help")
+	markup.add(item1,item2, item3, item6)
 
 	bot.send_message(message.chat.id, "<b>Вот список моих команд:\n   !пара</b> - узнать, какая сейчас пара.\n   <b>!расписание</b> - узнать какое сегодня расписание\n   <b>!неделя</b> - узнать все расписание на текущую неделю\n<b>     [ !1 неделя</b> - узнать расписание на первую неделю<b> ]\n     [ !2 неделя</b> - узнать расписание на первую неделю ]", parse_mode = "html", reply_markup=markup)
 
@@ -53,23 +57,36 @@ def send_schedule(message):
 	bot.send_message(message.chat.id, "<b>Все пары на сегодня:</b>\n{0}".format(text), parse_mode = 'html')
 
 @bot.message_handler(commands=['неделя'])
-def send_week(message, name):
-	text = get_lessons.get_all_lessons_weeks(name)
+def send_week(message):
+	text = get_lessons.get_all_lessons_weeks("")
 	bot.send_message(message.chat.id, "<b>Все расписание на неделю:</b>\n{0}".format(text), parse_mode = 'html')
+
+@bot.message_handler(commands=['1неделя'])
+def send_first_week(message):
+	text = get_lessons.get_all_lessons_weeks("Первая")
+	bot.send_message(message.chat.id, "<b>Все расписание на неделю:</b>\n{0}".format(text), parse_mode = 'html')
+
+@bot.message_handler(commands=['2неделя'])
+def send_second_week(message):
+	text = get_lessons.get_all_lessons_weeks("Вторая")
+	bot.send_message(message.chat.id, "<b>Все расписание на неделю:</b>\n{0}".format(text), parse_mode = 'html')
+
+@bot.message_handler(commands=['завтра'])
+def send_lessons_tomorrow(message):
+	text = get_lessons.get_all_lessons_tomorrow()
+	bot.send_message(message.chat.id, "<b>Все пары на завтра:</b>\n{0}".format(text), parse_mode = 'html')
 
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
-	if message.text == "!неделя" or message.text == "!Неделя":
-		send_week(message, '')
-	elif message.text == "!1 неделя" or message.text == "!1 Неделя" or message.text == "!1Неделя" or message.text == "!1неделя":
-		send_week(message,"Первая")
+	if message.text == "!1 неделя" or message.text == "!1 Неделя" or message.text == "!1Неделя" or message.text == "!1неделя":
+		send_first_week(message)
 	elif message.text == "!2 неделя" or message.text == "!2 Неделя" or message.text == "!2Неделя" or message.text == "!2неделя":
-		send_week(message,"Вторая")
+		send_second_week(message)
 	elif message.text == "!расписание" or message.text == "!Расписание":
 		send_schedule(message)
 	elif message.text == "!пара" or message.text == "!Пара":
 		send_lessons(message)
-	else:
-		bot.reply_to(message, "Я не знаю, что на это ответить")
+	# else:
+	# 	bot.reply_to(message, "Я не знаю, что на это ответить")
 
 bot.infinity_polling()

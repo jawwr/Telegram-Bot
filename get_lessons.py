@@ -41,12 +41,30 @@ def get_all_lessons_today():
                 text = text + "\n{0}) Пара: {1}\nНачало в: {2}\nКонец в: {3}\nАудитория: {4}\n".format(i+1,less_today.name,less_today.time_start, less_today.time_end,less_today.auditorium)
     return text
 
+# Получение расписания на завтра
+def get_all_lessons_tomorrow():
+    week = get_week('')
+    day_now = get_date.get_day_number() + 1
+    if get_week('') == "Первая" and day_now == 7:
+        week = get_week("Вторая")
+        day_now = 0
+    elif get_week('') == "Первая" and day_now == 7:
+        week = get_week("Вторая")
+        day_now = 0
+    text = ""
+    if day_now == 6:
+        text = text + "Пар нет"
+    else:
+        for i in range(0, len(week[day_now])):
+            less_today = week[day_now][i]
+            text = text + "\n{0}) Пара: {1}\nНачало в: {2}\nКонец в: {3}\nАудитория: {4}\n".format(i+1,less_today.name,less_today.time_start, less_today.time_end,less_today.auditorium)
+    return text
 
 # Получение расписания на всю неделю, если неделя была выбрана, то расписание возвращается на выбранную, иначе на текущую
 def get_all_lessons_weeks(name_week):
-    week = get_week(name_week)
     if name_week == "":
         name_week = get_date.get_week_number()
+    week = get_week(name_week)
     text = "\n<b>{0} неделя.</b>\n\n".format(name_week)
     for day in range(0, len(week)):
         text = text + "———————————\n"

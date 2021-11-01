@@ -1,8 +1,9 @@
 import telebot
 from telebot import types
 import get_lessons
+import config
 
-bot = telebot.TeleBot("2091213776:AAHPJFbbj2u7w7vHpqL_BKNTOHsGLWQ4wYs")
+bot = telebot.TeleBot(config.Token)
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):

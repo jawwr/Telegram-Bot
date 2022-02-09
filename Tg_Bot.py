@@ -44,46 +44,46 @@ def send_lessons(message):
 	lesson = get_lessons.get_lessons()
 	if lesson == "lessons will start":
 		first_lesson = get_lessons.get_first_lessons()
-		bot.send_message(message.chat.id, "<b>Пары еще не начались!\nПервая пара:</b> {0}\n<b>Начало в:</b> {1}".format(first_lesson.name,first_lesson.time_start), parse_mode = 'html')
+		bot.send_message(message.chat.id, f"<b>Пары еще не начались!\nПервая пара:</b> {first_lesson['name']}\n<b>Начало в:</b> {first_lesson['time_start']}", parse_mode = 'html')
 	elif lesson == "lessons are over":
 		bot.send_message(message.chat.id, "<b>Пары кончились!</b>", parse_mode = 'html')
 	elif lesson == "pause":
 		next_lesson = get_lessons.get_next_lessons()
-		bot.send_message(message.chat.id, "<b>Сейчас перемена\nСледующая пара:</b> {0}\n<b>Начало в:</b> {1}".format(next_lesson.name,next_lesson.time_start), parse_mode = 'html')
+		bot.send_message(message.chat.id, f"<b>Сейчас перемена\nСледующая пара:</b> {next_lesson['name']}\n<b>Начало в:</b> {next_lesson['time_start']}", parse_mode = 'html')
 	elif lesson == "no lesson":
 		bot.send_message(message.chat.id, "<b>На сегодня пар нет, отдыхай!</b>", parse_mode = 'html')
 	else:
-		bot.send_message(message.chat.id, "Сейчас идет пара {0}\nНачало пары: {1}\nКонец пары: {2}\nАудитория: {3}".format(lesson.name, lesson.time_start, lesson.time_end,lesson.auditorium))
+		bot.send_message(message.chat.id, f"Сейчас идет пара {lesson['name']}\nНачало пары: {lesson['time_start']}\nКонец пары: {lesson['time_end']}\nАудитория: {lesson['auditorium']}")
 
 #Сообщение с расписанием на сегодняшний день
 @bot.message_handler(commands=['расписание'])
 def send_schedule(message):
 	text = get_lessons.get_all_lessons_today()
-	bot.send_message(message.chat.id, "<b>Все пары на сегодня:</b>\n{0}".format(text), parse_mode = 'html')
+	bot.send_message(message.chat.id, f"<b>Все пары на сегодня:</b>\n{text}", parse_mode = 'html')
 
 #Сообщение с расписанием на текущую неделю
 @bot.message_handler(commands=['неделя'])
 def send_week(message):
 	text = get_lessons.get_all_lessons_weeks("")
-	bot.send_message(message.chat.id, "<b>Все расписание на неделю:</b>\n{0}".format(text), parse_mode = 'html')
+	bot.send_message(message.chat.id, f"<b>Все расписание на неделю:</b>\n{text}", parse_mode = 'html')
 
 #Сообщение с расписанием на первую неделю
 @bot.message_handler(commands=['1неделя'])
 def send_first_week(message):
 	text = get_lessons.get_all_lessons_weeks("Первая")
-	bot.send_message(message.chat.id, "<b>Все расписание на неделю:</b>\n{0}".format(text), parse_mode = 'html')
+	bot.send_message(message.chat.id, f"<b>Все расписание на неделю:</b>\n{text}", parse_mode = 'html')
 
 #Сообщение с расписанием на вторую неделю
 @bot.message_handler(commands=['2неделя'])
 def send_second_week(message):
 	text = get_lessons.get_all_lessons_weeks("Вторая")
-	bot.send_message(message.chat.id, "<b>Все расписание на неделю:</b>\n{0}".format(text), parse_mode = 'html')
+	bot.send_message(message.chat.id, f"<b>Все расписание на неделю:</b>\n{text}", parse_mode = 'html')
 
 #Сообщение с расписанием на завтра
 @bot.message_handler(commands=['завтра'])
 def send_lessons_tomorrow(message):
 	text = get_lessons.get_all_lessons_tomorrow()
-	bot.send_message(message.chat.id, "<b>Все пары на завтра:</b>\n{0}".format(text), parse_mode = 'html')
+	bot.send_message(message.chat.id, f"<b>Все пары на завтра:</b>\n{text}", parse_mode = 'html')
 
 #Обработка сообщений с командами в другом виде
 @bot.message_handler(func=lambda message: True)
